@@ -1,8 +1,0 @@
-enum UnityOfMeasure {
-  grammes,
-  unit,
-
-
-
-
-}
