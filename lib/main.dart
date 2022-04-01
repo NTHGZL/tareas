@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tareas/ui/screens/home.dart';
 import 'package:tareas/ui/screens/list_item.dart';
+import 'package:tareas/ui/screens/login.dart';
+import 'package:tareas/ui/screens/register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,11 +21,13 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       routes: {
-        '/home' : (context) => Home(),
+        '/login' : (context) => const Login(),
+        '/register' : (context) => Register(),
+        '/home' : (context) => const Home(),
         '/tasks' : (context) => ListItem()
 
       },
-      home: Home(),
+      home: const Home(),
     );
   }
 }

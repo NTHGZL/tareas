@@ -1,13 +1,26 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:tareas/repositories/token_repository.dart';
 
-class Api {
+class ApiRepository {
   static const String _baseUrl = 'https://api-tareas.nathangonzalez.fr';
 
+  final TokenRepository _tokenRepository;
 
- static Future<Map<String, dynamic>> getRequest(String url) async {
-    final Response response = await get(Uri.parse(_baseUrl + url));
+  ApiRepository(this._tokenRepository);
+
+  Future<Map<String, dynamic>> getRequest({required String url}) async {
+
+    final token = await _tokenRepository.getToken();
+
+    final response = await get(
+      Uri.parse('$_baseUrl$url'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -15,26 +28,35 @@ class Api {
     }
   }
 
-  static Future<Map<String, dynamic>> postRequest(String url, Map<String, dynamic> body) async {
-    final Response response = await post(Uri.parse(_baseUrl + url), body: body);
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+
+  Future<Map<String, dynamic>> postRequest({required String url, required Map<String, dynamic> body, required bool useToken}) async {
+
+    Response response;
+
+    if (useToken) {
+      final token = await _tokenRepository.getToken();
+      response = await post(
+        Uri.parse('$_baseUrl$url'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(body),
+      );
     } else {
-      throw Exception('Failed to load tasks');
+      response = await post(
+        Uri.parse('$_baseUrl$url'),
+        body: jsonEncode(body),
+      );
     }
 
 
-
-  }
-
-  static Future<Map<String, dynamic>> getRequestWithJwtToken(String url, String jwtToken) async {
-    final Response response = await get(Uri.parse(_baseUrl + url), headers: {'Authorization': 'Bearer $jwtToken'});
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception('Failed to load tasks');
+      throw Exception(response.body);
     }
   }
+
 
 
 

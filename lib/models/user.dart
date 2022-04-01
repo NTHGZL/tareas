@@ -1,17 +1,35 @@
 class User{
-  String? _name;
-  String? _email;
-  String? _lastname;
-  String? _jwt;
-  String? _id;
+  final String? _name;
+  final String? _email;
+  final String? _lastname;
+  final String? _id;
 
-  User(this._name, this._email, this._lastname, this._jwt, this._id);
+  User(this._name, this._email, this._lastname, this._id);
 
   String? get name => _name;
   String? get email => _email;
   String? get lastname => _lastname;
-  String? get jwt => _jwt;
   String? get id => _id;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': _name,
+      'email': _email,
+      'lastname': _lastname,
+      'id': _id,
+    };
+  }
+
+  factory User.fromMap(Map<String, dynamic> map) {
+
+    return User(
+      map['name'],
+      map['email'],
+      map['lastname'],
+      map['id'],
+    );
+  }
+
 
 
 }
