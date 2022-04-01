@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tareas/widgets/login_form.dart';
 
 class Login extends StatelessWidget{
   const Login({Key? key}) : super(key: key);
@@ -21,41 +22,7 @@ class Login extends StatelessWidget{
             height: 100,
           ),
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.mail),
-              labelText: 'Mail',
-              fillColor: Colors.white,
-              filled: true
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.lock),
-              labelText: 'Mot de passe',
-              fillColor: Colors.white,
-              filled: true
-            ),
-          ),
-           Padding(
-            padding: const EdgeInsets.only(top: 25, bottom: 25),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-                backgroundColor: Colors.indigo,
-                minimumSize: const Size(150, 50)
-
-              ),
-                onPressed: ()=>{
-                  Navigator.of(context).pushNamed('/home')
-                },
-                child: const Text('Se connecter')
-
-
-            ),
-
-
-          )
+          LoginForm()
         ],
       )
     );

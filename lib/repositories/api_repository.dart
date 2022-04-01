@@ -45,7 +45,7 @@ class ApiRepository {
     } else {
       response = await post(
         Uri.parse('$_baseUrl$url'),
-        body: jsonEncode(body),
+        body: body,
       );
     }
 

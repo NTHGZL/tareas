@@ -52,6 +52,11 @@ class RegisterForm extends StatelessWidget{
             ),
             ElevatedButton(
 
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo),
+                padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(vertical: 20, horizontal: 50)),
+
+              ),
               onPressed: () async {
                User user = await _userService.register(
                    email: 'nathan@shff.fr',
@@ -64,6 +69,12 @@ class RegisterForm extends StatelessWidget{
               child: const Text('S\'inscrire'),
 
             ),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              child: const Text('Vous avez déjà un compte ?', style: TextStyle(color: Colors.white),),
+            )
 
 
 

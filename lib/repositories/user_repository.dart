@@ -33,7 +33,8 @@ class UserRepository{
             'email': email,
             'password': password,
             'name': name,
-            'lastname': lastname
+            'lastname': lastname,
+            'username': email,
           },
 
 
