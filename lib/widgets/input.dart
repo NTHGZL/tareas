@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tareas/models/validator.dart';
 
 class Input extends StatelessWidget{
 
@@ -9,7 +10,9 @@ class Input extends StatelessWidget{
   final TextInputType? keyboardType;
   final TextEditingController? controller;
 
-  const Input({Key? key, required this.label, required this.hint, this.keyboardType,this.controller, this.icon, this.obscureText}) : super(key: key);
+  final String type;
+
+  const Input({Key? key, required this.label, required this.hint, this.keyboardType,this.controller, this.icon, this.obscureText, required this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class Input extends StatelessWidget{
 
            border: const OutlineInputBorder(
              borderSide: BorderSide(color: Colors.white),
-             borderRadius: BorderRadius.all(Radius.elliptical(20, 20)),
+             borderRadius: BorderRadius.all(Radius.circular(5)),
            ),
            contentPadding: const EdgeInsets.symmetric(vertical: 25),
            labelText: label,
@@ -47,6 +50,33 @@ class Input extends StatelessWidget{
            color: Colors.white,
            fontSize: 15,
          ),
+         validator: (String? value){
+           if(value == null || !value.isNotEmpty){
+             return 'Ce champ est requis';
+           }
+           switch(type){
+             case 'email':
+               if(!value.isValidEmail){
+                  return 'Format incorrect';
+               }
+               return null;
+
+             case 'name':
+               if(!value.isValidName){
+                 return 'Format incorrect';
+               }
+               return null;
+
+             case 'password':
+               if(!value.isValidPassword){
+                 return 'Format incorrect';
+               }
+               return null;
+
+           }
+           return null;
+
+         },
 
 
 

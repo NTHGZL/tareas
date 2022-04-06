@@ -1,3 +1,5 @@
+
+
 import 'dart:convert';
 
 import 'api_repository.dart';
@@ -17,7 +19,7 @@ class UserRepository{
             'password': password
           },
           useToken: false
-      );
+      ) as Map<String, dynamic>;
       return response;
     }catch(e){
       throw Exception(e.toString());
@@ -39,12 +41,23 @@ class UserRepository{
 
 
           useToken: false
-      );
+      ) as Map<String, dynamic>;
       return response;
     }catch(e){
       throw Exception(e);
     }
 
+  }
+
+  Future <Map<String, dynamic>> getUser() async{
+    try{
+      final response =  await _apiRepository.getRequest(
+          url: '/users/me',
+      ) as Map<String, dynamic>;
+      return response;
+    }catch(e){
+      throw Exception(e);
+    }
   }
 
 }

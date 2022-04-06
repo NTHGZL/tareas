@@ -17,4 +17,9 @@ class TokenRepository {
     return prefs.setString(_key, token);
   }
 
+  deleteToken() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(_key);
+  }
+
 }

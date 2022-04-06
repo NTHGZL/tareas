@@ -1,39 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:tareas/repositories/api_repository.dart';
-import 'package:tareas/repositories/token_repository.dart';
-import 'package:tareas/repositories/user_repository.dart';
-import 'package:tareas/services/user_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tareas/blocs/user_cubit.dart';
+import 'package:tareas/widgets/button_full_width.dart';
 import 'package:tareas/widgets/input.dart';
 
-import '../models/user.dart';
+class RegisterForm extends StatefulWidget{
+   const RegisterForm({Key? key}) : super(key: key);
 
-class RegisterForm extends StatelessWidget{
-   RegisterForm({Key? key}) : super(key: key);
+  @override
+  State<RegisterForm> createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
 
-  final UserService _userService = UserService(UserRepository(ApiRepository(TokenRepository())), TokenRepository());
+
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Form(
+        key: _formKey,
         child: Column(
           children:  [
             Input(
                 label: 'Prénom',
                 hint: 'Jean',
                 icon: const Icon(Icons.person, color: Colors.white,),
-                controller: _nameController
+                controller: _nameController,
+                type: 'name',
+
+
             ),
             Input(
                 label: 'Nom',
                 hint: 'Dupont',
                 icon: const Icon(Icons.person, color: Colors.white,),
-                controller: _lastnameController
+                controller: _lastnameController,
+              type: 'name',
+
             ),
             Input(
               label: 'Mail',
@@ -41,6 +51,7 @@ class RegisterForm extends StatelessWidget{
               icon: const Icon(Icons.mail, color: Colors.white),
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
+              type: 'email',
             ),
             Input(
               label: 'Mot de passe',
@@ -49,26 +60,24 @@ class RegisterForm extends StatelessWidget{
               obscureText: true,
               keyboardType: TextInputType.text,
               controller: _passwordController,
+              type: 'password',
             ),
-            ElevatedButton(
+            ButtonFullWidth(text: 'S\'inscrire', onPressed:  ()async {
 
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo),
-                padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(vertical: 20, horizontal: 50)),
+              if(_formKey.currentState!.validate()){
+                try{
+                  await context.read<UserCubit>().register(_emailController.text, _passwordController.text,
+                      _nameController.text, _lastnameController.text);
+                  Navigator.of(context).pushNamed('/home');
+                }catch(e){
+                  await context.read<UserCubit>().removeUser();
 
-              ),
-              onPressed: () async {
-               User user = await _userService.register(
-                   email: 'nathan@shff.fr',
-                   password: 'test1231',
-                    name: 'Nathan',
-                    lastname: 'Gonzalez',
-                );
-                print(user.toString());
-              },
-              child: const Text('S\'inscrire'),
+                  throw Exception(e.toString());
+                }
+              }
 
-            ),
+            }),
+
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, '/login');
@@ -84,5 +93,4 @@ class RegisterForm extends StatelessWidget{
       );
 
   }
-  
 }

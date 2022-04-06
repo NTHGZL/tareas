@@ -12,18 +12,20 @@ class Login extends StatelessWidget{
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
-        
-        children: [
-           Padding(padding: const EdgeInsets.only(top: 25, bottom: 25),
-          child: SvgPicture.asset(
-            'assets/images/logo.svg',
-            width: 100,
-            height: 100,
-          ),
-          ),
-          LoginForm()
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+
+          children: [
+            Padding(padding: const EdgeInsets.only(top: 25, bottom: 25),
+              child: SvgPicture.asset(
+                'assets/images/logo.svg',
+                width: 200,
+
+              ),
+            ),
+            LoginForm()
+          ],
+        ),
       )
     );
   }

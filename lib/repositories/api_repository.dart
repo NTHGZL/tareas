@@ -10,7 +10,7 @@ class ApiRepository {
 
   ApiRepository(this._tokenRepository);
 
-  Future<Map<String, dynamic>> getRequest({required String url}) async {
+  Future<dynamic> getRequest({required String url}) async {
 
     final token = await _tokenRepository.getToken();
 
@@ -24,12 +24,12 @@ class ApiRepository {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception('Failed to load tasks');
+      throw Exception(response.body);
     }
   }
 
 
-  Future<Map<String, dynamic>> postRequest({required String url, required Map<String, dynamic> body, required bool useToken}) async {
+  Future<dynamic> postRequest({required String url, required Map<String, dynamic> body, required bool useToken}) async {
 
     Response response;
 
@@ -39,6 +39,8 @@ class ApiRepository {
         Uri.parse('$_baseUrl$url'),
         headers: {
           'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
+
         },
         body: jsonEncode(body),
       );
@@ -48,9 +50,27 @@ class ApiRepository {
         body: body,
       );
     }
+    print(body);
 
 
     if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception(response.body);
+    }
+  }
+
+  Future<dynamic> putRequest({required String url, required Map<String, dynamic> body}) async {
+    final token = await _tokenRepository.getToken();
+    Response response = await put(
+      Uri.parse('$_baseUrl$url'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: body,
+    );
+
+    if(response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
       throw Exception(response.body);
