@@ -34,7 +34,7 @@ class User{
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
-    print(map.toString());
+
     return User(
       map['name'],
       map['email'],

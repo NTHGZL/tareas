@@ -1,9 +1,3 @@
-
-
-import 'dart:convert';
-
-import 'package:http/http.dart';
-import 'package:tareas/models/task.dart';
 import 'package:tareas/repositories/api_repository.dart';
 
 class TaskRepository{
@@ -34,7 +28,7 @@ class TaskRepository{
   }
 
   createTask(String title) async{
-    print(title);
+
     try{
       final response = await _apiRepository.postRequest(url: '/tasks',
           body: {
@@ -44,7 +38,6 @@ class TaskRepository{
 
       return response;
     }catch(e){
-      print(e.toString());
       Exception(e.toString());
     }
   }

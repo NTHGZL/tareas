@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tareas/blocs/task_cubit.dart';
 import 'package:tareas/models/task.dart';
+import 'package:tareas/widgets/create_item_form.dart';
 import 'package:tareas/widgets/list_item_widget.dart';
 
 class ListTasksScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class ListTasksScreen extends StatefulWidget {
 class _ListTasksScreenState extends State<ListTasksScreen> {
 
   bool isVisible = false;
-  final TextEditingController _taskTitleController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,27 +35,29 @@ class _ListTasksScreenState extends State<ListTasksScreen> {
               builder: (context, tasks){
                 List<Task> notCompleteTasks = tasks.where((task) => !task.completed).toList();
                 List<Task> completeTasks = tasks.where((task) => task.completed).toList();
-                return Column(
-                  children:  [
-                    ListItemWidget(
-                      items: notCompleteTasks,
-                      listItemCubit: context.read<TaskCubit>(),
-                    ),
-                    InkWell(
-                      child: Row(
-                        children:  [
-                          isVisible ? const RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.white,) ,) : const Icon(Icons.chevron_right, color: Colors.white,),
-                           Text('Terminées ('+notCompleteTasks.length.toString()+')', style: const TextStyle(fontSize: 20, color: Colors.white)),
-                        ],
+                return Expanded(
+                  child: Column(
+                    children:  [
+                      ListItemWidget(
+                        items: notCompleteTasks,
+                        listItemCubit: context.read<TaskCubit>(),
                       ),
-                      onTap: (){
-                        setState(() {
-                          isVisible = !isVisible;
-                        });
-                      },
-                    ),
-                    if(isVisible) ListItemWidget(items: completeTasks, listItemCubit: context.read<TaskCubit>())
-                  ],
+                      InkWell(
+                        child: Row(
+                          children:  [
+                            isVisible ? const RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.white,) ,) : const Icon(Icons.chevron_right, color: Colors.white,),
+                            Text('Terminées ('+completeTasks.length.toString()+')', style: const TextStyle(fontSize: 20, color: Colors.white)),
+                          ],
+                        ),
+                        onTap: (){
+                          setState(() {
+                            isVisible = !isVisible;
+                          });
+                        },
+                      ),
+                      if(isVisible) ListItemWidget(items: completeTasks, listItemCubit: context.read<TaskCubit>())
+                    ],
+                  ),
                 );
 
               }
@@ -66,42 +68,16 @@ class _ListTasksScreenState extends State<ListTasksScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet<void>(
+            backgroundColor: const Color.fromRGBO(40, 40, 40, 1.0),
             isScrollControlled: true,
             context: context,
             builder: (BuildContext context) {
-              return SingleChildScrollView(
+              return Padding(
                 padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: SizedBox(
+                child:  SizedBox(
 
                   height: 100,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-
-                        padding: const EdgeInsets.only(left :20),
-                        width: MediaQuery.of(context).size.width*0.6,
-
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Nouvelle tâche'
-                            ),
-                          controller: _taskTitleController,
-                          autofocus: true,
-                        ),
-                      ),
-                      ElevatedButton(
-                        child: const Icon(Icons.add),
-                        onPressed: () async {
-                          await context.read<TaskCubit>().addTask(_taskTitleController.text);
-                          _taskTitleController.text = '';
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ),
+                  child: CreateItemForm(itemCubit: context.read<TaskCubit>())
                 ),
               );
             },

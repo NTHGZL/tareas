@@ -24,11 +24,10 @@ class UserService{
   Future<User> register(
       { required String email,  required String password,  required String name,  required String lastname}) async {
 
-    print('User Service...');
+
     try{
       final response = await _userRepository.register(email: email, password: password, name: name, lastname: lastname);
       final User user = User.fromMap(response['user']);
-      print('Le user : '+user.toString());
       final jwt = response['jwt'];
       _tokenRepository.setToken(jwt);
       return user;

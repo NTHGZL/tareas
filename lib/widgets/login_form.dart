@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tareas/blocs/user_cubit.dart';
-import 'package:tareas/repositories/api_repository.dart';
-import 'package:tareas/repositories/token_repository.dart';
-import 'package:tareas/repositories/user_repository.dart';
-import 'package:tareas/services/user_service.dart';
 import 'package:tareas/widgets/button_full_width.dart';
 import 'package:tareas/widgets/input.dart';
-
-import '../models/user.dart';
 
 class LoginForm extends StatelessWidget {
 
@@ -16,9 +10,6 @@ class LoginForm extends StatelessWidget {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  final UserService _userService = UserService(UserRepository(ApiRepository(TokenRepository())), TokenRepository() );
-
 
   @override
   Widget build(BuildContext context) {

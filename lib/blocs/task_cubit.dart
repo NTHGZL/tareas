@@ -37,7 +37,6 @@ class TaskCubit extends Cubit<List<Task>> implements ListItemCubit{
 
       emit(tasks);
     } catch (e) {
-      print(e);
       throw Exception(e.toString());
     }
   }

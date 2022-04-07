@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tareas/services/token_service.dart';
 import 'package:tareas/services/user_service.dart';
@@ -14,7 +13,7 @@ class UserCubit extends Cubit<User?>{
 
   Future<void> loadUser() async {
     String? token = await _tokenService.getToken();
-    print(token);
+
     if(token != null){
       try{
         User user = await _userService.getUser();

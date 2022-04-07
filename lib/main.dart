@@ -35,8 +35,8 @@ void main() async {
   final TaskCubit taskCubit = TaskCubit(_tasks, _taskService);
   final String? token = await _tokenService.getToken();
   if(token != null){
-    userCubit.loadUser();
-    taskCubit.loadTasks();
+    await userCubit.loadUser();
+    await taskCubit.loadTasks();
   }
 
   runApp(MultiBlocProvider(
@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
       },
       home: BlocBuilder<UserCubit, User?>(
         builder: (context, user) {
-          print(user);
+
           if (user == null) {
             return const PublicHome();
           }
