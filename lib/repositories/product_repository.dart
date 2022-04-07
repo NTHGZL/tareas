@@ -1,15 +1,15 @@
 import 'package:tareas/repositories/api_repository.dart';
 
-class TaskRepository{
+class ProductRepository {
 
   final ApiRepository _apiRepository;
 
-  TaskRepository(this._apiRepository);
+  ProductRepository(this._apiRepository);
 
   Future<List<dynamic>> find()async {
 
     try{
-      final response = await _apiRepository.getRequest(url: '/tasks') as List<dynamic>;
+      final response = await _apiRepository.getRequest(url: '/products') as List<dynamic>;
       return response;
     }catch(e){
       throw Exception(e.toString());
@@ -18,8 +18,8 @@ class TaskRepository{
 
   Future<dynamic> update (String id, bool completed) async {
     try{
-      final response = await _apiRepository.putRequest(url: '/tasks/$id', body: {
-        'isChecked': completed.toString(),
+      final response = await _apiRepository.putRequest(url: '/products/$id', body: {
+        'completed': completed.toString(),
       }) as dynamic;
       return response;
     }catch(e){
@@ -28,9 +28,8 @@ class TaskRepository{
   }
 
   Future<dynamic> create(String title) async{
-
     try{
-      final response = await _apiRepository.postRequest(url: '/tasks',
+      final response = await _apiRepository.postRequest(url: '/products',
           body: {
             'title': title,
           },

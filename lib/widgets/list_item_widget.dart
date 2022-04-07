@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tareas/blocs/list_item_cubit.dart';
+import 'package:tareas/blocs/item_cubit.dart';
 import 'package:tareas/models/item.dart';
 import 'package:tareas/widgets/item_widget.dart';
 
@@ -7,7 +7,7 @@ class ListItemWidget extends StatelessWidget{
 
   final List<Item> items;
 
-  final ListItemCubit listItemCubit;
+  final ItemCubit listItemCubit;
 
   const ListItemWidget({Key? key, required this.items, required this.listItemCubit}) : super(key: key);
   @override

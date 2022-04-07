@@ -1,6 +1,6 @@
 import 'package:tareas/models/item.dart';
 
-abstract class ListItemCubit{
+abstract class ItemCubit{
 
 
   Future<void> loadItems();

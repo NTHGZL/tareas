@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tareas/blocs/list_item_cubit.dart';
+import 'package:tareas/blocs/item_cubit.dart';
 
 class CreateItemForm extends StatefulWidget{
 
-final ListItemCubit itemCubit;
+final ItemCubit itemCubit;
 
   const CreateItemForm({Key? key, required this.itemCubit}) : super(key: key);
 

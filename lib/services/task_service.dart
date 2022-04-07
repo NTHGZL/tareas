@@ -8,14 +8,14 @@ class TaskService {
   TaskService(this._taskRepository);
   
   Future<List<Task>> getTasks() async {
-    final tasks = await _taskRepository.getTasks();
+    final tasks = await _taskRepository.find();
     return tasks.map((task) => Task.fromMap(task)).toList();
   }
 
   Future<Task> updateTask(Task task) async {
     task.completed = !task.completed;
     try{
-      final updatedTask = await _taskRepository.updateTask(task.id, task.completed);
+      final updatedTask = await _taskRepository.update(task.id, task.completed);
       return Task.fromMap(updatedTask);
     } catch (e) {
       throw Exception(e.toString());
@@ -25,7 +25,7 @@ class TaskService {
 
   Future<Task> createTask(String title) async{
     try{
-      final newTask = await _taskRepository.createTask(title);
+      final newTask = await _taskRepository.create(title);
       return Task.fromMap(newTask);
     }catch(e){
       throw Exception(e.toString());

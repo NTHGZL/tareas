@@ -50,7 +50,9 @@ class Home extends StatelessWidget{
                   leading: const Icon(Icons.shopping_cart, color: Colors.orange,),
                   title: const Text('Mes courses'),
                   textColor: Colors.white,
-                  onTap: ()=>{},
+                  onTap: ()=>{
+                    Navigator.of(context).pushNamed('/products')
+                  },
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),

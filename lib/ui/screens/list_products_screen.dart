@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tareas/blocs/task_cubit.dart';
-import 'package:tareas/models/task.dart';
+import 'package:tareas/blocs/product_cubit.dart';
 import 'package:tareas/widgets/create_item_form.dart';
 import 'package:tareas/widgets/list_item_widget.dart';
 
-class ListTasksScreen extends StatefulWidget {
-  const ListTasksScreen({Key? key}) : super(key: key);
+import '../../models/product.dart';
+
+class ListProductScreen extends StatefulWidget {
+  const ListProductScreen({Key? key}) : super(key: key);
 
   @override
-  State<ListTasksScreen> createState() => _ListTasksScreenState();
+  State<ListProductScreen> createState() => _ListProductScreenState();
 }
 
-class _ListTasksScreenState extends State<ListTasksScreen> {
+class _ListProductScreenState extends State<ListProductScreen> {
 
   bool isVisible = false;
 
@@ -21,31 +22,31 @@ class _ListTasksScreenState extends State<ListTasksScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Mes tâches'),
+        title: const Text('Mes Courses'),
         backgroundColor: Colors.transparent,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
           await Future.delayed(const Duration(seconds: 1), () {
-            context.read<TaskCubit>().loadTasks();
+            context.read<ProductCubit>().loadProducts();
           });
         },
         child: SingleChildScrollView(
-          child: BlocBuilder<TaskCubit, List<Task>>(
-              builder: (context, tasks){
-                List<Task> notCompleteTasks = tasks.where((task) => !task.completed).toList();
-                List<Task> completeTasks = tasks.where((task) => task.completed).toList();
+          child: BlocBuilder<ProductCubit, List<Product>>(
+              builder: (context, products){
+                List<Product> notCompleteProducts = products.where((product) => !product.completed).toList();
+                List<Product> completeProducts = products.where((product) => product.completed).toList();
                 return Column(
                     children:  [
                       ListItemWidget(
-                        items: notCompleteTasks,
-                        listItemCubit: context.read<TaskCubit>(),
+                        items: notCompleteProducts,
+                        listItemCubit: context.read<ProductCubit>(),
                       ),
                       InkWell(
                         child: Row(
                           children:  [
                             isVisible ? const RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.white,) ,) : const Icon(Icons.chevron_right, color: Colors.white,),
-                            Text('Terminées ('+completeTasks.length.toString()+')', style: const TextStyle(fontSize: 20, color: Colors.white)),
+                            Text('Terminées ('+completeProducts.length.toString()+')', style: const TextStyle(fontSize: 20, color: Colors.white)),
                           ],
                         ),
                         onTap: (){
@@ -54,10 +55,9 @@ class _ListTasksScreenState extends State<ListTasksScreen> {
                           });
                         },
                       ),
-                      if(isVisible) ListItemWidget(items: completeTasks, listItemCubit: context.read<TaskCubit>())
+                      if(isVisible) ListItemWidget(items: completeProducts, listItemCubit: context.read<ProductCubit>())
                     ],
                   );
-
 
               }
           ),
@@ -75,8 +75,8 @@ class _ListTasksScreenState extends State<ListTasksScreen> {
                 padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                 child:  SizedBox(
 
-                  height: 100,
-                  child: CreateItemForm(itemCubit: context.read<TaskCubit>())
+                    height: 100,
+                    child: CreateItemForm(itemCubit: context.read<ProductCubit>())
                 ),
               );
             },

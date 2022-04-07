@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tareas/blocs/product_cubit.dart';
 import 'package:tareas/blocs/task_cubit.dart';
 import 'package:tareas/blocs/user_cubit.dart';
+import 'package:tareas/models/product.dart';
 import 'package:tareas/models/task.dart';
 import 'package:tareas/models/user.dart';
 import 'package:tareas/repositories/api_repository.dart';
+import 'package:tareas/repositories/product_repository.dart';
 import 'package:tareas/repositories/task_repository.dart';
 import 'package:tareas/repositories/token_repository.dart';
 import 'package:tareas/repositories/user_repository.dart';
+import 'package:tareas/services/product_service.dart';
 import 'package:tareas/services/task_service.dart';
 import 'package:tareas/services/token_service.dart';
 import 'package:tareas/services/user_service.dart';
 import 'package:tareas/ui/screens/home.dart';
+import 'package:tareas/ui/screens/list_products_screen.dart';
 import 'package:tareas/ui/screens/list_tasks_screen.dart';
 import 'package:tareas/ui/screens/login.dart';
 import 'package:tareas/ui/screens/public_home.dart';
@@ -24,25 +29,32 @@ void main() async {
   ApiRepository apiRepository = ApiRepository(tokenRepository);
   UserRepository userRepository = UserRepository(apiRepository);
   TaskRepository taskRepository = TaskRepository(apiRepository);
+  ProductRepository productRepository = ProductRepository(apiRepository);
+
   User? _user;
   List<Task> _tasks = [];
+  List<Product> _products = [];
 
 
   UserService _userService = UserService(userRepository, tokenRepository);
   TaskService _taskService = TaskService(taskRepository);
+  ProductService _productService = ProductService(productRepository);
 
   final UserCubit userCubit = UserCubit(_user, _userService, _tokenService);
   final TaskCubit taskCubit = TaskCubit(_tasks, _taskService);
+  final ProductCubit productCubit = ProductCubit(_products, _productService);
   final String? token = await _tokenService.getToken();
   if(token != null){
     await userCubit.loadUser();
     await taskCubit.loadTasks();
+    await productCubit.loadProducts();
   }
 
   runApp(MultiBlocProvider(
       providers: [
         BlocProvider<UserCubit>(create: (context) => userCubit),
         BlocProvider<TaskCubit>(create: (context) => taskCubit),
+        BlocProvider<ProductCubit>(create: (context) => productCubit),
       ],
       child: const MyApp()));
 }
@@ -65,6 +77,7 @@ class MyApp extends StatelessWidget {
         '/register' : (context) => const Register(),
         '/home' : (context) => const Home(),
         '/tasks' : (context) => const ListTasksScreen(),
+        '/products' : (context) => const ListProductScreen(),
         '/public_home' : (context) => const PublicHome(),
       },
       home: BlocBuilder<UserCubit, User?>(

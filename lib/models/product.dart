@@ -12,7 +12,7 @@ class Product extends Item {
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      map['id'] as String,
+      map['id'].toString(),
       map['title'] as String,
       map['completed'] as bool,
     );
