@@ -56,7 +56,7 @@ class Input extends StatelessWidget{
            }
            switch(type){
              case 'email':
-               if(!value.isValidEmail){
+               if(!value.trim().isValidEmail){
                   return 'Format incorrect';
                }
                return null;
