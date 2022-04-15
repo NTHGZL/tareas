@@ -32,32 +32,34 @@ class _ListProductScreenState extends State<ListProductScreen> {
           });
         },
         child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: BlocBuilder<ProductCubit, List<Product>>(
               builder: (context, products){
+                context.read<ProductCubit>().loadProducts();
                 List<Product> notCompleteProducts = products.where((product) => !product.completed).toList();
                 List<Product> completeProducts = products.where((product) => product.completed).toList();
                 return Column(
-                    children:  [
-                      ListItemWidget(
-                        items: notCompleteProducts,
-                        listItemCubit: context.read<ProductCubit>(),
+                  children:  [
+                    ListItemWidget(
+                      items: notCompleteProducts,
+                      listItemCubit: context.read<ProductCubit>(),
+                    ),
+                    InkWell(
+                      child: Row(
+                        children:  [
+                          isVisible ? const RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.white,) ,) : const Icon(Icons.chevron_right, color: Colors.white,),
+                          Text('Terminées ('+completeProducts.length.toString()+')', style: const TextStyle(fontSize: 20, color: Colors.white)),
+                        ],
                       ),
-                      InkWell(
-                        child: Row(
-                          children:  [
-                            isVisible ? const RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.white,) ,) : const Icon(Icons.chevron_right, color: Colors.white,),
-                            Text('Terminées ('+completeProducts.length.toString()+')', style: const TextStyle(fontSize: 20, color: Colors.white)),
-                          ],
-                        ),
-                        onTap: (){
-                          setState(() {
-                            isVisible = !isVisible;
-                          });
-                        },
-                      ),
-                      if(isVisible) ListItemWidget(items: completeProducts, listItemCubit: context.read<ProductCubit>())
-                    ],
-                  );
+                      onTap: (){
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      },
+                    ),
+                    if(isVisible) ListItemWidget(items: completeProducts, listItemCubit: context.read<ProductCubit>())
+                  ],
+                );
 
               }
           ),

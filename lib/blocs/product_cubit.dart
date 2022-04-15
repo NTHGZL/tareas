@@ -42,6 +42,16 @@ class ProductCubit extends Cubit<List<Product>> implements ItemCubit {
     }
   }
 
+  Future<void> deleteProduct(String id) async{
+    try{
+      await _productService.deleteProduct(id);
+      final tasks = await _productService.getProducts();
+      emit(tasks);
+    }catch(e){
+      throw Exception(e.toString());
+    }
+  }
+
   @override
   Future<void> loadItems() async{
     await loadProducts();
@@ -55,6 +65,11 @@ class ProductCubit extends Cubit<List<Product>> implements ItemCubit {
   @override
   Future<void> addItems(String title) async {
     await addProduct(title);
+  }
+
+  @override
+  Future<void> deleteItems(String id) async{
+    await deleteProduct(id);
   }
   
 }

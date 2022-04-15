@@ -9,4 +9,6 @@ abstract class ItemCubit{
 
   Future<void> addItems(String title);
 
+  Future<void> deleteItems(String id);
+
 }

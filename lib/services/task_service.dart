@@ -31,5 +31,14 @@ class TaskService {
       throw Exception(e.toString());
     }
   }
+  Future<Task> deleteTask(String id) async{
+    try{
+      final deletedTask = await _taskRepository.delete(id);
+      return Task.fromMap(deletedTask);
+    }catch(e){
+      throw Exception(e.toString());
+    }
+  }
+
   
 }

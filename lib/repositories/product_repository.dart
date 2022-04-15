@@ -41,4 +41,13 @@ class ProductRepository {
     }
   }
 
+  Future<dynamic> delete (String id) async {
+    try{
+      final response = await _apiRepository.deleteRequest(url: '/products/$id');
+      return response;
+    }catch(e){
+      throw Exception(e.toString());
+    }
+  }
+
 }

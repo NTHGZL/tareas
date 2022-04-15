@@ -24,7 +24,11 @@ class ListItemWidget extends StatelessWidget{
                   onPressCheckedButton: ()async
                   {
                     await listItemCubit.updateItems(item);
-                  }
+                  },
+                onPressDeletedButton: ()async
+                {
+                  await listItemCubit.deleteItems(item.id);
+                },
               );
             }
         );

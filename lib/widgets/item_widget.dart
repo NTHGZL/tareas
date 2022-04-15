@@ -7,8 +7,8 @@ class ItemWidget extends StatelessWidget{
 
   final Item item;
   final Function onPressCheckedButton;
-
-  const ItemWidget({Key? key, required this.item, required this.onPressCheckedButton}) : super(key: key);
+  final Function onPressDeletedButton;
+  const ItemWidget({Key? key, required this.item, required this.onPressCheckedButton, required this.onPressDeletedButton}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +20,13 @@ class ItemWidget extends StatelessWidget{
 
       ),
       child: ListTile(
+        trailing: IconButton(
+          icon: const Icon(Icons.delete, color: Colors.red,),
+          onPressed: ()async{
+            await onPressDeletedButton();
+          },
+        ),
+
         leading: IconButton(onPressed: () async {
           await onPressCheckedButton();
         },

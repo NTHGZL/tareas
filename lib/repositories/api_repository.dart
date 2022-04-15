@@ -77,6 +77,23 @@ class ApiRepository {
     }
   }
 
+  Future<dynamic> deleteRequest({required String url}) async {
+    final token = await _tokenRepository.getToken();
+
+    Response response = await delete(
+        Uri.parse('$_baseUrl$url'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+    );
+    if(response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception(response.body);
+    }
+
+  }
+
 
 
 

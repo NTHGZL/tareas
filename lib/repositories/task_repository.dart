@@ -42,4 +42,13 @@ class TaskRepository{
     }
   }
 
+  Future<dynamic> delete (String id) async {
+      try{
+        final response = await _apiRepository.deleteRequest(url: '/tasks/$id');
+        return response;
+      }catch(e){
+        throw Exception(e.toString());
+    }
+  }
+
 }

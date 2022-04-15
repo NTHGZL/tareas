@@ -29,9 +29,6 @@ class Home extends StatelessWidget{
                 padding: EdgeInsets.only(left: 20),
                 child: CircleAvatarInitials(),
               ),
-              actions: [
-                IconButton(onPressed: ()=>{}, icon: const Icon(Icons.more_vert))
-              ],
 
             ),
             backgroundColor: Colors.black,

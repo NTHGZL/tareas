@@ -41,6 +41,17 @@ class TaskCubit extends Cubit<List<Task>> implements ItemCubit{
     }
   }
 
+  Future<void> deleteTask(String id) async{
+    try{
+      await _taskService.deleteTask(id);
+      final tasks = await _taskService.getTasks();
+      emit(tasks);
+    }catch(e){
+      throw Exception(e.toString());
+    }
+  }
+
+
   void reset() {
     emit([]);
   }
@@ -58,6 +69,11 @@ class TaskCubit extends Cubit<List<Task>> implements ItemCubit{
   @override
   Future<void> addItems(String title) async {
     await addTask(title);
+  }
+
+  @override
+  Future<void> deleteItems(String id) async {
+    await deleteTask(id);
   }
 
 

@@ -25,14 +25,17 @@ class _ListTasksScreenState extends State<ListTasksScreen> {
         backgroundColor: Colors.transparent,
       ),
       body: RefreshIndicator(
+
         onRefresh: () async {
           await Future.delayed(const Duration(seconds: 1), () {
             context.read<TaskCubit>().loadTasks();
           });
         },
         child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: BlocBuilder<TaskCubit, List<Task>>(
               builder: (context, tasks){
+                context.read<TaskCubit>().loadTasks();
                 List<Task> notCompleteTasks = tasks.where((task) => !task.completed).toList();
                 List<Task> completeTasks = tasks.where((task) => task.completed).toList();
                 return Column(

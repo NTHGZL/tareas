@@ -32,5 +32,14 @@ class ProductService {
     }
   }
 
+  Future<Product> deleteProduct(String id) async{
+    try{
+      final deletedProduct = await _productRepository.delete(id);
+      return Product.fromMap(deletedProduct);
+    }catch(e){
+      throw Exception(e.toString());
+    }
+  }
+
   
 }
