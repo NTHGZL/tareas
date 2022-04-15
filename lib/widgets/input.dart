@@ -69,7 +69,7 @@ class Input extends StatelessWidget{
 
              case 'password':
                if(!value.isValidPassword){
-                 return 'Format incorrect';
+                 return 'Au moins 6 caractères';
                }
                return null;
 
