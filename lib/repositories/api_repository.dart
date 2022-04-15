@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+
 import 'package:tareas/repositories/token_repository.dart';
 
 class ApiRepository {
@@ -56,6 +57,7 @@ class ApiRepository {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
+
       throw Exception(response.body);
     }
   }
@@ -89,7 +91,9 @@ class ApiRepository {
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception(response.body);
+
+      Map<String, dynamic> errorMessageApi = jsonDecode(response.body);
+      throw Exception(errorMessageApi['message']['messages']['message']);
     }
 
   }

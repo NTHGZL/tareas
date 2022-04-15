@@ -4,8 +4,8 @@ class ButtonFullWidth extends StatelessWidget {
 
   final  Function? onPressed;
   final String text;
-
-  const ButtonFullWidth({Key? key, required this.text, this.onPressed}) : super(key: key);
+  final bool isLoading;
+  const ButtonFullWidth({Key? key, required this.text, this.onPressed, required this.isLoading}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +13,7 @@ class ButtonFullWidth extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: ElevatedButton(
+
           onPressed: ()async {
 
             if(onPressed != null) {
@@ -22,7 +23,8 @@ class ButtonFullWidth extends StatelessWidget {
           },
           child: Text(text, style: const TextStyle(color: Colors.white)),
           style: ElevatedButton.styleFrom(
-            primary: Colors.indigo,
+
+            primary: isLoading ? Colors.grey : Colors.indigo,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
             minimumSize: const Size.fromHeight(65),
           )

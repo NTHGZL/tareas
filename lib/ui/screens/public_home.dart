@@ -22,12 +22,14 @@ class PublicHome extends StatelessWidget{
               ),
             ),
             ButtonFullWidth(
+              isLoading : false,
                 text: 'Je n\'ai pas de compte',
                 onPressed: (){
                   Navigator.of(context).pushNamed('/register');
                 },
             ),
             ButtonFullWidth(
+              isLoading : false,
                 text: 'Je suis déjà inscrit',
                 onPressed: (){
                   Navigator.of(context).pushNamed('/login');

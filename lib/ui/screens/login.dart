@@ -23,7 +23,7 @@ class Login extends StatelessWidget{
 
               ),
             ),
-            LoginForm()
+            const LoginForm()
           ],
         ),
       )

@@ -19,7 +19,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _lastnameController = TextEditingController();
 
 
-
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -62,19 +62,35 @@ class _RegisterFormState extends State<RegisterForm> {
               controller: _passwordController,
               type: 'password',
             ),
-            ButtonFullWidth(text: 'S\'inscrire', onPressed:  ()async {
+            ButtonFullWidth(
+                text: 'S\'inscrire',
+                isLoading: false,
+                onPressed:  ()async {
 
-              if(_formKey.currentState!.validate()){
+              if(_formKey.currentState!.validate() && !isLoading){
+                setState(() {
+                  isLoading = true;
+                });
                 try{
-                  await context.read<UserCubit>().register(_emailController.text, _passwordController.text,
+                  await context.read<UserCubit>().register(_emailController.text.trim(), _passwordController.text.trim(),
                       _nameController.text, _lastnameController.text);
                   Navigator.of(context).pushNamed('/home');
                 }catch(e){
                   await context.read<UserCubit>().removeUser();
+                  showModalBottomSheet(context: context, builder: (BuildContext context){
 
+                    return Container(
+                      height: 100,
+                      color: Colors.red,
+                      child:  const Center(child: Text('Erreur lors de l\'inscription')),
+                    );
+                  });
                   throw Exception(e.toString());
                 }
               }
+              setState(() {
+                isLoading = false;
+              });
 
             }),
 

@@ -17,8 +17,8 @@ class UserRepository{
           useToken: false
       ) as Map<String, dynamic>;
       return response;
-    }catch(e){
-      throw Exception(e.toString());
+    }on Map<String, dynamic> catch(e){
+      throw Exception(e['error']);
     }
   }
 
